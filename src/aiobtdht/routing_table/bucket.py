@@ -39,7 +39,7 @@ class Bucket:
             yield node, stat
 
     def enum_nodes_for_refresh(self):
-        return map(lambda it: it[0], filter(lambda it: it[1].rate <= 0, self._enum_nodes()))
+        return map(lambda it: it[0].addr, filter(lambda it: it[1].rate <= 0, self._enum_nodes()))
 
     @property
     def range_min(self):
