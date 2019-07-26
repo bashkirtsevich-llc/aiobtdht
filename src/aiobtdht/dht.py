@@ -2,9 +2,9 @@ import asyncio
 from collections import namedtuple
 from datetime import datetime
 
-from aiokrpc import KRPCErrorResponse
-from aiokrpc import KRPCProtocolError
 from aiokrpc import KRPCServer
+from aiokrpc.exceptions import KRPCErrorResponse
+from aiokrpc.exceptions import KRPCProtocolError
 
 from routing_table import RoutingTable
 from schemas import ANNOUNCE_PEER_ARGS

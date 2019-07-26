@@ -1,0 +1,16 @@
+dist: xenial
+language: python
+python:
+  - "3.7"
+script:
+  - python setup.py build
+deploy:
+  provider: pypi
+  user: $USERNAME
+  password: $USERPASSWORD
+  distributions: sdist bdist_wheel
+  on:
+    all_branches: true
+  skip_cleanup: true
+after_script:
+  - echo "Deploy to PyPI finished."

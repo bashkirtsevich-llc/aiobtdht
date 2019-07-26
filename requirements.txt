@@ -1,1 +1,0 @@
-aio-krpc-server==0.0.3

@@ -1,4 +1,5 @@
 # Asyncio Bittorrent DHT Server
+[![Build Status](https://travis-ci.org/bashkirtsevich-llc/aiobtdht.svg?branch=master)](https://travis-ci.org/bashkirtsevich-llc/aiobtdht)
 
 Simply async distributed hash table for Bittorrent network.
 
