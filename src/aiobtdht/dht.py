@@ -6,28 +6,28 @@ from aiokrpc import KRPCServer
 from aiokrpc.exceptions import KRPCErrorResponse
 from aiokrpc.exceptions import KRPCProtocolError
 
-from routing_table import RoutingTable
-from schemas import ANNOUNCE_PEER_ARGS
-from schemas import ANNOUNCE_PEER_ARGS_REMOTE
-from schemas import ANNOUNCE_PEER_RESULT
-from schemas import ANNOUNCE_PEER_RESULT_REMOTE
-from schemas import FIND_NODE_ARGS
-from schemas import FIND_NODE_ARGS_REMOTE
-from schemas import FIND_NODE_RESULT
-from schemas import FIND_NODE_RESULT_REMOTE
-from schemas import GET_PEERS_ARGS
-from schemas import GET_PEERS_ARGS_REMOTE
-from schemas import GET_PEERS_RESULT
-from schemas import GET_PEERS_RESULT_REMOTE
-from schemas import PING_ARGS
-from schemas import PING_ARGS_REMOTE
-from schemas import PING_RESULT
-from schemas import PING_RESULT_REMOTE
-from utils import calc_sha1
-from utils import call_timeout
-from utils import info_hash_to_int
-from utils import random
-from utils import run_every
+from .routing_table import RoutingTable
+from .schemas import ANNOUNCE_PEER_ARGS
+from .schemas import ANNOUNCE_PEER_ARGS_REMOTE
+from .schemas import ANNOUNCE_PEER_RESULT
+from .schemas import ANNOUNCE_PEER_RESULT_REMOTE
+from .schemas import FIND_NODE_ARGS
+from .schemas import FIND_NODE_ARGS_REMOTE
+from .schemas import FIND_NODE_RESULT
+from .schemas import FIND_NODE_RESULT_REMOTE
+from .schemas import GET_PEERS_ARGS
+from .schemas import GET_PEERS_ARGS_REMOTE
+from .schemas import GET_PEERS_RESULT
+from .schemas import GET_PEERS_RESULT_REMOTE
+from .schemas import PING_ARGS
+from .schemas import PING_ARGS_REMOTE
+from .schemas import PING_RESULT
+from .schemas import PING_RESULT_REMOTE
+from .utils import calc_sha1
+from .utils import call_timeout
+from .utils import info_hash_to_int
+from .utils import random
+from .utils import run_every
 
 PeerInfo = namedtuple("peer_info", ["addr", "port", "implied_port", "added"])
 

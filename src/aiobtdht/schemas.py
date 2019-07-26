@@ -1,9 +1,9 @@
-from utils import decode_id
-from utils import decode_nodes
-from utils import decode_peers
-from utils import encode_id
-from utils import encode_nodes
-from utils import encode_peers
+from .utils import decode_id
+from .utils import decode_nodes
+from .utils import decode_peers
+from .utils import encode_id
+from .utils import encode_nodes
+from .utils import encode_peers
 
 _ID_ENCODE_SCHEMA = {"type": "binary", "minlength": 20, "maxlength": 20, "coerce": encode_id}
 _ID_DECODE_SCHEMA = {"type": "integer", "coerce": decode_id}
