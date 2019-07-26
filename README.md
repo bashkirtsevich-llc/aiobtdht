@@ -11,6 +11,44 @@ Class hierarchy:
     * DHT — implementation of Bittorrent [D]istributed [H]ash [T]able;
 
 
+## `DHT.__init__`
+
+Arguments:
+* `local_id` (int) — local node identifier in range [0..2^160).
+
+Optional arguments:
+* `upload_speed` (int, default `0`) — outgoing traffic throttler;
+* `download_speed` (int, default `0`) — incoming traffic throttler;
+* `recv_max_size` (int, default `256 * 1024`) — socket reading buffer size.
+
+
+## `run`
+
+Launch servering.
+
+Arguments:  
+* `host` (str) — local host address, e.g. `0.0.0.0`;
+* `port` (int) — local port for outgoing and incoming UDP traffic;
+* `loop` (object, default `None`) — asyncio eventloop, will create while `None` and run forever.
+
+
+## async `bootstrap`
+
+Method for initializing routing table.
+
+Arguments:
+* `initial_peers` (list, example: `[(ip: str, port: int), ...]`) — list of router for initialize routing table;
+
+
+## async `announce`
+
+Announce peer for specified `info_hash`.
+
+Arguemtns:
+* `info_hash` (str) — hex-string of torrent `info_hash`;
+* `port` (int, default `None`) — information for announce, value is DHT-server listen port when `None`. 
+
+
 ## Example
 
 ```python
