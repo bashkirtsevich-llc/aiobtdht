@@ -31,6 +31,8 @@ Arguments:
 * `port` (int) — local port for outgoing and incoming UDP traffic;
 * `loop` (object, default `None`) — asyncio eventloop, will create while `None` and run forever.
 
+Result: `None`.
+
 
 ## async `bootstrap`
 
@@ -39,6 +41,7 @@ Method for initializing routing table.
 Arguments:
 * `initial_peers` (list, example: `[(ip: str, port: int), ...]`) — list of router for initialize routing table;
 
+Result: `None`.
 
 ## async `announce`
 
@@ -46,7 +49,16 @@ Announce peer for specified `info_hash`.
 
 Arguemtns:
 * `info_hash` (str) — hex-string of torrent `info_hash`;
-* `port` (int, default `None`) — information for announce, value is DHT-server listen port when `None`. 
+* `port` (int, default `None`) — information for announce, value is DHT-server listen port when `None`.
+
+Result: `None`.
+
+
+## async `__getitem__`
+
+Get peers for torrent by `info_hash`.
+
+Result: `Set((host: str, port: int), ...)`.
 
 
 ## Example
