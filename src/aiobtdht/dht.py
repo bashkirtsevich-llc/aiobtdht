@@ -25,7 +25,7 @@ from .schemas import PING_RESULT
 from .schemas import PING_RESULT_REMOTE
 from .utils import calc_sha1
 from .utils import call_timeout
-from .utils import info_hash_to_int
+from .utils import decode_info_hash
 from .utils import random
 from .utils import run_every
 
@@ -285,7 +285,7 @@ class DHT(KRPCServer):
                 break
 
     async def announce(self, info_hash, port=None):
-        await self._get_values(info_hash_to_int(info_hash), announce=True, port=port)
+        await self._get_values(decode_info_hash(info_hash), announce=True, port=port)
 
     def __getitem__(self, item):
-        return self._get_values(info_hash_to_int(item))
+        return self._get_values(decode_info_hash(item))

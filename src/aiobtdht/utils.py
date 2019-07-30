@@ -4,10 +4,6 @@ from os import getrandom
 from socket import inet_aton, inet_ntoa
 
 
-def info_hash_to_int(info_hash):
-    return int(f"0x{info_hash}", 16)
-
-
 def random(size=1):
     return getrandom(size)
 
@@ -25,6 +21,10 @@ def decode_id(id_):
         raise ValueError("Wrong length")
 
     return int.from_bytes(id_, "big")
+
+
+def decode_info_hash(info_hash):
+    return decode_id(info_hash)
 
 
 def encode_addr(addr):

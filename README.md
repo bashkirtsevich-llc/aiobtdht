@@ -11,7 +11,9 @@ Class hierarchy:
     * DHT — implementation of Bittorrent [D]istributed [H]ash [T]able;
 
 
-## `DHT.__init__`
+## Methods
+
+### `DHT.__init__`
 
 Arguments:
 * `local_id` (int) — local node identifier in range [0..2^160).
@@ -22,7 +24,7 @@ Optional arguments:
 * `recv_max_size` (int, default `256 * 1024`) — socket reading buffer size.
 
 
-## `run`
+### `run`
 
 Launch servering.
 
@@ -34,7 +36,7 @@ Arguments:
 Result: `None`.
 
 
-## async `bootstrap`
+### async `bootstrap`
 
 Method for initializing routing table.
 
@@ -43,20 +45,23 @@ Arguments:
 
 Result: `None`.
 
-## async `announce`
+### async `announce`
 
 Announce peer for specified `info_hash`.
 
 Arguemtns:
-* `info_hash` (str) — hex-string of torrent `info_hash`;
+* `info_hash` (20 bytes) — binary form of `info_hash`;
 * `port` (int, default `None`) — information for announce, value is DHT-server listen port when `None`.
 
 Result: `None`.
 
 
-## async `__getitem__`
+### async `__getitem__`
 
 Get peers for torrent by `info_hash`.
+
+Arguemtns:
+* `info_hash` (20 bytes) — binary form of `info_hash`;
 
 Result: `Set((host: str, port: int), ...)`.
 
@@ -83,19 +88,19 @@ async def main(loop):
     print("bootstrap done")
 
     print("search peers for Linux Mint torrent (8df9e68813c4232db0506c897ae4c210daa98250)")
-    peers = await dht["8df9e68813c4232db0506c897ae4c210daa98250"]
+    peers = await dht[bytes.fromhex("8df9e68813c4232db0506c897ae4c210daa98250")]
     print("peers:", peers)
 
     print("peer search for ECB3E22E1DC0AA078B48B7323AEBBA827AD9BD80")
-    peers = await dht["ECB3E22E1DC0AA078B48B7323AEBBA827AD9BD80"]
+    peers = await dht[bytes.fromhex("ECB3E22E1DC0AA078B48B7323AEBBA827AD9BD80")]
     print("peers:", peers)
 
     print("announce with port `2357`")
-    await dht.announce("ECB3E22E1DC0AA078B48B7323AEBBA827AD9BD80", 2357)
+    await dht.announce(bytes.fromhex("ECB3E22E1DC0AA078B48B7323AEBBA827AD9BD80"), 2357)
     print("announce done")
 
     print("search our own ip")
-    peers = await dht["ECB3E22E1DC0AA078B48B7323AEBBA827AD9BD80"]
+    peers = await dht[bytes.fromhex("ECB3E22E1DC0AA078B48B7323AEBBA827AD9BD80")]
     print("peers:", peers)
 
 

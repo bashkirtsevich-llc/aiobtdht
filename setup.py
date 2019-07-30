@@ -5,7 +5,7 @@ with open("README.md") as f:
 
 setup(
     name="aio-btdht",
-    version="0.0.3",
+    version="0.0.4",
     description="Asyncio Bittorrent DHT",
     long_description=long_description,
     long_description_content_type="text/markdown",

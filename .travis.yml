@@ -10,7 +10,7 @@ deploy:
   password: $USERPASSWORD
   distributions: sdist bdist_wheel
   on:
-    all_branches: true
+    branch: master
   skip_cleanup: true
 after_script:
   - echo "Deploy to PyPI finished."
