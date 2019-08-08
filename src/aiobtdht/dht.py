@@ -59,12 +59,12 @@ class DHT(KRPCServer):
 
     # region Server methods
     def ping(self, addr, id):
-        self._run_future(self._try_add_node(id, addr))
+        self._run_future(self._add_or_update_node(id, addr))
 
         return self._get_result_id()
 
     def find_node(self, addr, id, target):
-        self._run_future(self._try_add_node(id, addr))
+        self._run_future(self._add_or_update_node(id, addr))
 
         return {
             "nodes": self.routing_table[target],
@@ -72,7 +72,7 @@ class DHT(KRPCServer):
         }
 
     def get_peers(self, addr, id, info_hash):
-        self._run_future(self._try_add_node(id, addr))
+        self._run_future(self._add_or_update_node(id, addr))
 
         peers = self.torrents.get(info_hash, None)
         if peers:
@@ -84,7 +84,7 @@ class DHT(KRPCServer):
             return {**self.find_node(addr, id, info_hash), **self._get_result_token(addr)}
 
     def announce_peer(self, addr, id, info_hash, port, token, implied_port=0):
-        self._run_future(self._try_add_node(id, addr))
+        self._run_future(self._add_or_update_node(id, addr))
 
         if self._check_token(addr, token):
             self.torrents.setdefault(info_hash, set()).add(
@@ -187,8 +187,10 @@ class DHT(KRPCServer):
             result_schema=ANNOUNCE_PEER_RESULT_REMOTE
         )
 
-    async def _try_add_node(self, id_, addr):
-        if (id_, addr) not in self.routing_table:
+    async def _add_or_update_node(self, id_, addr):
+        if (id_, addr) in self.routing_table:
+            self._add_node(id_, addr)
+        else:
             response = await self.remote_ping(addr)
             if response:
                 self._add_node(response[1]["id"], addr)
