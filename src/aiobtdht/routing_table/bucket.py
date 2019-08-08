@@ -62,6 +62,6 @@ class Bucket:
         if isinstance(item, int):
             return any(item == node.id for node in self._nodes)
         elif isinstance(item, tuple):
-            return any(item == node for node in self._nodes)
+            return any(item == (node.id, node.addr) for node in self._nodes)
         else:
             raise TypeError("Unsupported type")

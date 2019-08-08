@@ -59,29 +59,33 @@ class DHT(KRPCServer):
 
     # region Server methods
     def ping(self, addr, id):
-        self._add_node(node_id=id, addr=addr)
+        self._run_future(self._try_add_node(id, addr))
+
         return self._get_result_id()
 
     def find_node(self, addr, id, target):
-        self._add_node(node_id=id, addr=addr)
+        self._run_future(self._try_add_node(id, addr))
+
         return {
             "nodes": self.routing_table[target],
             **self._get_result_id()
         }
 
     def get_peers(self, addr, id, info_hash):
-        self._add_node(node_id=id, addr=addr)
+        self._run_future(self._try_add_node(id, addr))
 
         peers = self.torrents.get(info_hash, None)
         if peers:
             return {
                 **self._get_result_id(), **self._get_result_token(addr),
-                "values": list(map(lambda it: (it.addr[0], it.addr[1] if it.implied_port else it.port), peers))
+                "values": [(peer.addr[0], peer.addr[1] if peer.implied_port else peer.port) for peer in peers]
             }
         else:
             return {**self.find_node(addr, id, info_hash), **self._get_result_token(addr)}
 
     def announce_peer(self, addr, id, info_hash, port, token, implied_port=0):
+        self._run_future(self._try_add_node(id, addr))
+
         if self._check_token(addr, token):
             self.torrents.setdefault(info_hash, set()).add(
                 PeerInfo(
@@ -127,7 +131,6 @@ class DHT(KRPCServer):
     # endregion
 
     # region Remote calls
-
     async def _remote_call(self, addr, method, kwargs, timeout=3, arg_schema=None, result_schema=None):
         def _args_error(e):
             raise ArgsError()
@@ -183,6 +186,12 @@ class DHT(KRPCServer):
             arg_schema=ANNOUNCE_PEER_ARGS_REMOTE,
             result_schema=ANNOUNCE_PEER_RESULT_REMOTE
         )
+
+    async def _try_add_node(self, id_, addr):
+        if (id_, addr) not in self.routing_table:
+            response = await self.remote_ping(addr)
+            if response:
+                self._add_node(response[1]["id"], addr)
 
     # endregion
 
