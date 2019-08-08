@@ -120,6 +120,10 @@ class DHT(KRPCServer):
     def _run_every(self, f, delay):
         self._run_future(run_every(f, delay))
 
+    @staticmethod
+    def server_version():
+        return "AD"
+
     # endregion
 
     # region Remote calls

@@ -21,6 +21,6 @@ setup(
     package_dir={"": "src"},
     python_requires=">=3.6.*",
     install_requires=[
-        "aio-krpc-server==0.0.4"
+        "aio-krpc-server==0.0.5"
     ]
 )
