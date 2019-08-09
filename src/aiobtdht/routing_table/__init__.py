@@ -8,9 +8,6 @@ class RoutingTable:
         self._buckets = {Bucket(0, 2 ** 160)}
 
     def add(self, id_, addr):
-        if (id_, addr) in self:
-            return False
-
         for bucket in self._buckets:
             if bucket.id_in_range(id_):
                 added = bucket.add(Node(id_, addr))
