@@ -41,8 +41,8 @@ class ResultError(Exception):
 
 
 class DHT(KRPCServer):
-    def __init__(self, local_id, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, local_id, server, loop):
+        super().__init__(server=server, loop=loop)
 
         self.id = local_id
         self.routing_table = RoutingTable(local_id)
@@ -56,6 +56,16 @@ class DHT(KRPCServer):
         self.register_callback(self.get_peers, arg_schema=GET_PEERS_ARGS, result_schema=GET_PEERS_RESULT)
         self.register_callback(self.announce_peer, arg_schema=ANNOUNCE_PEER_ARGS, result_schema=ANNOUNCE_PEER_RESULT)
         # endregion
+
+        for args in (
+                (self._refresh_nodes, 60),
+                (self._rotate_salts, 60),
+                (self._forget_torrents, 60)):
+            self._run_every(*args)
+
+    def _run_future(self, *args):
+        for fut in args:
+            asyncio.ensure_future(fut, loop=self.loop)
 
     # region Server methods
     def ping(self, addr, id):
@@ -126,7 +136,7 @@ class DHT(KRPCServer):
 
     @staticmethod
     def server_version():
-        return "AD"
+        return "aio-dht"
 
     # endregion
 
@@ -141,11 +151,11 @@ class DHT(KRPCServer):
         try:
             result = await call_timeout(
                 self.call_remote(
-                    addr, method, **self.apply_schema(kwargs, arg_schema or {}, _args_error)
+                    addr, method, **self._apply_schema(kwargs, arg_schema or {}, _args_error)
                 ), timeout, None
             )
             if result:
-                return result[0], self.apply_schema(result[1], result_schema or {}, _result_error)
+                return result[0], self._apply_schema(result[1], result_schema or {}, _result_error)
 
             return None
         except (KRPCErrorResponse, ResultError):
@@ -196,13 +206,6 @@ class DHT(KRPCServer):
                 self._add_node(response[1]["id"], addr)
 
     # endregion
-
-    def connection_made(self):
-        for args in (
-                (self._refresh_nodes, 60),
-                (self._rotate_salts, 60),
-                (self._forget_torrents, 60)):
-            self._run_every(*args)
 
     # region Periodic tasks
     async def _refresh_nodes(self):

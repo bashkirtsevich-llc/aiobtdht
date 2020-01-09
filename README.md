@@ -70,18 +70,21 @@ Result: `Set((host: str, port: int), ...)`.
 
 ```python
 import asyncio
-from aiobtdht import DHT 
+from aiobtdht import DHT
+from aioudp import UDPServer
 
 
 async def main(loop):
-    dht = DHT(int("0x54A10C9B159FC0FBBF6A39029BCEF406904019E0", 16))
-    dht.run("0.0.0.0", 12346, loop=loop)
-
     initial_nodes = [
         ("67.215.246.10", 6881),  # router.bittorrent.com
         ("87.98.162.88", 6881),  # dht.transmissionbt.com
         ("82.221.103.244", 6881)  # router.utorrent.com
     ]
+
+    udp = UDPServer()
+    udp.run("0.0.0.0", 12346, loop=loop)
+
+    dht = DHT(int("0x54A10C9B159FC0FBBF6A39029BCEF406904019E0", 16), server=udp, loop=loop)
 
     print("bootstrap")
     await dht.bootstrap(initial_nodes)
@@ -107,6 +110,7 @@ async def main(loop):
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main(loop))
+    loop.run_forever()
 ```
 
 Output:

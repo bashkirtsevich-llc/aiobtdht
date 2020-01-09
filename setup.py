@@ -5,7 +5,7 @@ with open("README.md") as f:
 
 setup(
     name="aio-btdht",
-    version="0.0.8",
+    version="0.0.9",
     description="Asyncio Bittorrent DHT",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -21,6 +21,6 @@ setup(
     package_dir={"": "src"},
     python_requires=">=3.6.*",
     install_requires=[
-        "aio-krpc-server==0.0.6"
+        "aio-krpc-server==0.0.7"
     ]
 )
