@@ -23,6 +23,8 @@ from .schemas import PING_ARGS
 from .schemas import PING_ARGS_REMOTE
 from .schemas import PING_RESULT
 from .schemas import PING_RESULT_REMOTE
+from .schemas import SAMPLE_INFOHASHES_ARGS_REMOTE
+from .schemas import SAMPLE_INFOHASHES_RESULT_REMOTE
 from .utils import calc_sha1
 from .utils import call_timeout
 from .utils import decode_info_hash
@@ -195,6 +197,15 @@ class DHT(KRPCServer):
             timeout=timeout,
             arg_schema=ANNOUNCE_PEER_ARGS_REMOTE,
             result_schema=ANNOUNCE_PEER_RESULT_REMOTE
+        )
+
+    async def remote_sample_infohashes(self, addr, target_id, timeout=3):
+        return await self._remote_call(
+            addr, "sample_infohashes",
+            kwargs={"id": self.id, "target": target_id},
+            timeout=timeout,
+            arg_schema=SAMPLE_INFOHASHES_ARGS_REMOTE,
+            result_schema=SAMPLE_INFOHASHES_RESULT_REMOTE
         )
 
     async def _add_or_update_node(self, id_, addr):
