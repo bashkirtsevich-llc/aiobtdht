@@ -27,6 +27,10 @@ def decode_info_hash(info_hash):
     return decode_id(info_hash)
 
 
+def decode_samples(samples):
+    return [decode_id(samples[i:i+20]) for i in range(0, len(samples), 20)]
+
+
 def encode_addr(addr):
     host, port = addr
     return b"".join((inet_aton(host), port.to_bytes(2, "big")))

@@ -1,6 +1,7 @@
 from .utils import decode_id
 from .utils import decode_nodes
 from .utils import decode_peers
+from .utils import decode_samples
 from .utils import encode_id
 from .utils import encode_nodes
 from .utils import encode_peers
@@ -18,6 +19,8 @@ _VALUES_ENCODE_SCHEMA = {"type": "list", "coerce": encode_peers, "schema": {"typ
 _VALUES_DECODE_SCHEMA = {"type": "list", "coerce": decode_peers}
 
 _TOKEN_SCHEMA = {"type": "binary"}
+
+_SAMPLES_DECODE_SCHEMA = {"type": "list", "coerce": decode_samples, "required": False}
 
 PING_ARGS = {"id": {"required": True, **_ID_DECODE_SCHEMA}}
 PING_RESULT = {"id": {"required": True, **_ID_ENCODE_SCHEMA}}
@@ -68,3 +71,13 @@ ANNOUNCE_PEER_ARGS_REMOTE = {
     "token": {"required": True, **_TOKEN_SCHEMA},
     "implied_port": {"type": "integer", "required": False, "min": 0, "max": 1}}
 ANNOUNCE_PEER_RESULT_REMOTE = {"id": {"required": True, **_ID_DECODE_SCHEMA}}
+
+SAMPLE_INFOHASHES_ARGS_REMOTE = {
+    "id": {"required": True, **_ID_ENCODE_SCHEMA},
+    "target": {"required": True, **_ID_ENCODE_SCHEMA}}
+SAMPLE_INFOHASHES_RESULT_REMOTE = {
+    "id": {"required": True, **_ID_DECODE_SCHEMA},
+    "interval": {"type": "integer", "required": False},
+    "nodes": _NODES_DECODE_SCHEMA,
+    "num": {"type": "integer", "required": False},
+    "samples": _SAMPLES_DECODE_SCHEMA}
