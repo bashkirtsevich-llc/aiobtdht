@@ -65,7 +65,7 @@ class DHT(KRPCServer):
 
     def _run_future(self, *args):
         for fut in args:
-            asyncio.ensure_future(fut, loop=self.loop)
+            asyncio.ensure_future(fut)
 
     # region Server methods
     def ping(self, addr, id):
@@ -212,8 +212,7 @@ class DHT(KRPCServer):
         responses = filter(
             lambda response: response,
             await asyncio.gather(
-                *(self.remote_ping(node[1]) for node in self.routing_table.enum_nodes_for_refresh()),
-                loop=self.loop
+                *(self.remote_ping(node[1]) for node in self.routing_table.enum_nodes_for_refresh())
             )
         )
 
@@ -243,8 +242,7 @@ class DHT(KRPCServer):
         return filter(
             lambda response: response and response[1]["id"] != self.id,
             await asyncio.gather(
-                *(cb(peer) for peer in peers),
-                loop=self.loop
+                *(cb(peer) for peer in peers)
             )
         )
 

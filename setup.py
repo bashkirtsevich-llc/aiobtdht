@@ -19,7 +19,7 @@ setup(
     zip_safe=True,
     packages=find_packages("src"),
     package_dir={"": "src"},
-    python_requires=">=3.6.*",
+    python_requires=">=3.8",
     install_requires=[
         "aio-krpc-server==0.0.7"
     ]
