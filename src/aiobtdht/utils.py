@@ -1,11 +1,11 @@
 import asyncio
 from hashlib import sha1
-from os import getrandom
+from os import urandom
 from socket import inet_aton, inet_ntoa
 
 
 def random(size=1):
-    return getrandom(size)
+    return urandom(size)
 
 
 def calc_sha1(data):
